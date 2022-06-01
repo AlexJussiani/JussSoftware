@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using JS.Core.Data.EventSourcing;
+using Microsoft.AspNetCore.Authorization;
+using NSE.WebAPI.Core.Identidade;
 
 namespace JS.Produtos.API.Controllers
 {
+    [Authorize]
     [Route("api/produtos")]
     public class ProdutosController : MainController
     {
@@ -23,6 +26,7 @@ namespace JS.Produtos.API.Controllers
             _mediator = mediator;
         }
 
+       // [ClaimsAuthorize("Produtos", "Ler")]
         [HttpGet()]
         public async Task<PagedResult<Produto>> Index([FromQuery] int ps = 8, [FromQuery] int page = 1, [FromQuery] string q = null)
         {

@@ -67,6 +67,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventSourcing", "EventSourc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JS.EventSourcing", "src\building blocks\JS.EventSourcing\JS.EventSourcing.csproj", "{148737BB-5671-48B9-AFD5-116477462D4D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{F5230FB6-D101-4DA0-A54C-A37353C9B9B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JS.Logging", "src\building blocks\Js.Logging\JS.Logging.csproj", "{593BAE26-F84A-4B4C-BB5A-50F987429657}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +153,10 @@ Global
 		{148737BB-5671-48B9-AFD5-116477462D4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{148737BB-5671-48B9-AFD5-116477462D4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{148737BB-5671-48B9-AFD5-116477462D4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{593BAE26-F84A-4B4C-BB5A-50F987429657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{593BAE26-F84A-4B4C-BB5A-50F987429657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{593BAE26-F84A-4B4C-BB5A-50F987429657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{593BAE26-F84A-4B4C-BB5A-50F987429657}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,6 +193,8 @@ Global
 		{2B346E96-EE2C-4C68-A5D8-A7E65F938DE4} = {B7ACD7CF-17C9-4556-8850-5E0D6328769E}
 		{CB7580CF-7810-4A15-852E-1FA69211F88F} = {096DB54E-7F2B-4781-A241-C39C3AE9FDDC}
 		{148737BB-5671-48B9-AFD5-116477462D4D} = {CB7580CF-7810-4A15-852E-1FA69211F88F}
+		{F5230FB6-D101-4DA0-A54C-A37353C9B9B1} = {096DB54E-7F2B-4781-A241-C39C3AE9FDDC}
+		{593BAE26-F84A-4B4C-BB5A-50F987429657} = {F5230FB6-D101-4DA0-A54C-A37353C9B9B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80C451A3-A398-4AE8-ACB1-D6B2AFAA265C}

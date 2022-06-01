@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetDevPack.Security.JwtSigningCredentials.AspNetCore;
+using NSE.WebAPI.Core.Identidade;
 
 namespace JS.Identidade.API.Configuration
 {
@@ -15,9 +16,9 @@ namespace JS.Identidade.API.Configuration
             services.AddControllers();
 
             services.AddScoped<AuthenticationService>();
-            services.AddScoped<IAspNetUser, AspNetUser>();
+            //services.AddScoped<IAspNetUser, AspNetUser>();
 
-            services.AddCors();
+            //services.AddCors();
 
             //services.AddCors(options =>
             //{
@@ -61,9 +62,9 @@ namespace JS.Identidade.API.Configuration
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader()
-                              .AllowAnyMethod()
-                              .AllowAnyOrigin());
+            //app.UseCors(x => x.AllowAnyHeader()
+            //                  .AllowAnyMethod()
+            //                  .AllowAnyOrigin());
 
             app.UseAuthConfiguration();
 
@@ -72,7 +73,7 @@ namespace JS.Identidade.API.Configuration
                 endpoints.MapControllers();
             });
             
-            app.UseJwksDiscovery();
+            //app.UseJwksDiscovery();
 
             return app;
         }

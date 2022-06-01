@@ -13,13 +13,11 @@ namespace JS.Contas.API.Controllers
     [Authorize]
     public class ContasController : MainController
     {
-        private readonly IAspNetUser _user;
         private readonly IMediatorHandler _mediator;
 
-        public ContasController(IMediatorHandler mediator, IAspNetUser user)
+        public ContasController(IMediatorHandler mediator)
         {
             _mediator = mediator;
-            _user = user;
         }
 
         [HttpPost("Adicionar/Conta")]

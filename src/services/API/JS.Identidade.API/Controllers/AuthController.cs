@@ -12,10 +12,16 @@ namespace JS.Identidade.API.Controllers
     public class AuthController : MainController
     {
         private readonly AuthenticationService _authenticationService;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AuthController(AuthenticationService authenticationService)
+        public AuthController(AuthenticationService authenticationService,
+             UserManager<IdentityUser> userManager,
+             SignInManager<IdentityUser> signInManager)
         {
+            _signInManager = signInManager;
             _authenticationService = authenticationService;
+            _userManager = userManager;
         }
 
         [HttpPost("nova-conta")]
@@ -30,7 +36,7 @@ namespace JS.Identidade.API.Controllers
                 EmailConfirmed = true
             };
 
-            var result = await _authenticationService.UserManager.CreateAsync(user, usuarioRegistro.Senha);
+            var result = await _userManager.CreateAsync(user, usuarioRegistro.Senha);
 
             if (result.Succeeded)
             {
@@ -50,7 +56,7 @@ namespace JS.Identidade.API.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await _authenticationService.SignInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha,
+            var result = await _signInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha,
                false, true);
 
             if (result.Succeeded)

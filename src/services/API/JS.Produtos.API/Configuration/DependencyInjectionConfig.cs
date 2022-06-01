@@ -8,6 +8,9 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using JS.EventSourcing;
 using JS.Core.Data.EventSourcing;
+using Microsoft.AspNetCore.Http;
+using JS.WebAPI.Core.Usuario;
+using NSE.WebAPI.Core.Usuario;
 
 namespace JS.Produtos.API.Configuration
 {
@@ -29,7 +32,8 @@ namespace JS.Produtos.API.Configuration
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<ProdutosContext>();
             services.AddScoped<ProdutoService>();
-           
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
         }
     }    
 }

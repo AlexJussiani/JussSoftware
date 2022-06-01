@@ -1,5 +1,7 @@
-﻿using JS.Contas.Infra.Data;
+﻿using HealthChecks.UI.Client;
+using JS.Contas.Infra.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +20,8 @@ namespace JS.Contas.API.Configuration
 
             services.AddControllers();
 
+            services.AddLoggingConfigurations(configuration);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("Total",
@@ -29,7 +33,7 @@ namespace JS.Contas.API.Configuration
             });
         }
 
-        public static void UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -44,10 +48,29 @@ namespace JS.Contas.API.Configuration
 
             app.UseAuthConfiguration();
 
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UserLoggingConfiguration();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/api/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecksUI(options =>
+                {
+                    options.UIPath = "/api/hc-ui";
+                    options.ResourcesPath = "/api/hc-ui-resources";
+
+                    options.UseRelativeApiPath = false;
+                    options.UseRelativeResourcesPath = false;
+                    options.UseRelativeWebhookPath = false;
+                });
             });
+            return app;
         }
     }
 }

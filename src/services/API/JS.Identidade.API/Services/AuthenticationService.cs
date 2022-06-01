@@ -6,56 +6,53 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Security.JwtSigningCredentials.Interfaces;
+using NSE.WebAPI.Core.Identidade;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace JS.Identidade.API.Services
 {
     public class AuthenticationService
     {
-        public readonly SignInManager<IdentityUser> SignInManager;
-        public readonly UserManager<IdentityUser> UserManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly AppSettings _appSettings;
         private readonly ApplicationDbContext _context;
-        private readonly AppTokenSettings _appTokenSettingsSettings;
 
-        private readonly IJsonWebKeySetService _jwksService;
-        private readonly IAspNetUser _aspNetUser;
 
-        public AuthenticationService(UserManager<IdentityUser> userManager,
-                                     ApplicationDbContext context,
-                                     IAspNetUser aspNetUser,
-                                     IJsonWebKeySetService jwksService,
-                                     IOptions<AppTokenSettings> appTokenSettingsSettings, 
-                                     SignInManager<IdentityUser> signInManager)
-        {
-            UserManager = userManager;
+        public AuthenticationService(ApplicationDbContext context,
+                              SignInManager<IdentityUser> signInManager,
+                              UserManager<IdentityUser> userManager,
+                              IOptions<AppSettings> appSettings
+                                    )
+        {           
             _context = context;
-            _aspNetUser = aspNetUser;
-            _jwksService = jwksService;
-            _appTokenSettingsSettings = appTokenSettingsSettings.Value;
-            SignInManager = signInManager;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<UsuarioRespostaLogin> GerarJwt(string email)
         {
-            var user = await UserManager.FindByEmailAsync(email);
-            var claims = await UserManager.GetClaimsAsync(user);
+            var user = await _userManager.FindByEmailAsync(email);
+            var claims = await _userManager.GetClaimsAsync(user);
 
             var identityClaims = await ObterClaimsUsuario(claims, user);
             var encodedToken = CodificarToken(identityClaims);
 
-            var refreshToken = await GerarRefreshToken(email);
+            //var refreshToken = await GerarRefreshToken(email);
 
-            return ObterRespostaToken(encodedToken, user, claims, refreshToken);
+            return ObterRespostaToken(encodedToken, user, claims);
         }
 
         private async Task<ClaimsIdentity> ObterClaimsUsuario(ICollection<Claim> claims, IdentityUser user)
         {
-            var userRoles = await UserManager.GetRolesAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
@@ -77,27 +74,26 @@ namespace JS.Identidade.API.Services
         private string CodificarToken(ClaimsIdentity identityClaims)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var currentIssuer =
-                $"{_aspNetUser.ObterHttpContext().Request.Scheme}://{_aspNetUser.ObterHttpContext().Request.Host}";
-            var key = _jwksService.GetCurrent();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = currentIssuer,
+                Issuer = _appSettings.Emissor,
+                Audience = _appSettings.ValidoEm,
                 Subject = identityClaims,
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = key
+                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             });
 
             return tokenHandler.WriteToken(token);
         }
 
         private UsuarioRespostaLogin ObterRespostaToken(string encodedToken, IdentityUser user,
-           IEnumerable<Claim> claims, RefreshToken refreshToken)
+           IEnumerable<Claim> claims)
         {
             return new UsuarioRespostaLogin
             {
                 AccessToken = encodedToken,
-                RefreshToken = refreshToken.Token,
+                //RefreshToken = refreshToken.Token,
                 ExpiresIn = TimeSpan.FromHours(1).TotalSeconds,
                 UsuarioToken = new UsuarioToken
                 {
@@ -112,30 +108,30 @@ namespace JS.Identidade.API.Services
             => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
                 .TotalSeconds);
 
-        private async Task<RefreshToken> GerarRefreshToken(string email)
-        {
-            var refreshToken = new RefreshToken
-            {
-                Username = email,
-                ExpirationDate = DateTime.UtcNow.AddHours(_appTokenSettingsSettings.RefreshTokenExpiration)
-            };
+        //private async Task<RefreshToken> GerarRefreshToken(string email)
+        //{
+        //    var refreshToken = new RefreshToken
+        //    {
+        //        Username = email,
+        //        ExpirationDate = DateTime.UtcNow.AddHours(_appTokenSettingsSettings.RefreshTokenExpiration)
+        //    };
 
-            _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(u => u.Username == email));
-            await _context.RefreshTokens.AddAsync(refreshToken);
+        //    _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(u => u.Username == email));
+        //    await _context.RefreshTokens.AddAsync(refreshToken);
 
-            await _context.SaveChangesAsync();
+        //    await _context.SaveChangesAsync();
 
-            return refreshToken;
-        }
+        //    return refreshToken;
+        //}
 
-        public async Task<RefreshToken> ObterRefreshToken(Guid refreshToken)
-        {
-            var token = await _context.RefreshTokens.AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Token == refreshToken);
+        //public async Task<RefreshToken> ObterRefreshToken(Guid refreshToken)
+        //{
+        //    var token = await _context.RefreshTokens.AsNoTracking()
+        //        .FirstOrDefaultAsync(u => u.Token == refreshToken);
 
-            return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now
-                ? token
-                : null;
-        }
+        //    return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now
+        //        ? token
+        //        : null;
+        //}
     }
 }
