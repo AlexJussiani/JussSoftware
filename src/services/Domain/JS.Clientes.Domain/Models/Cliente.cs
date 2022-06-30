@@ -10,8 +10,6 @@ namespace JS.Clientes.Domain.Models
         public string Telefone { get; set; }
         public bool Excluido { get; set; }
 
-        public TipoCliente TipoCliente { get; set; }
-
         //EF Relation
         public Endereco Endereco { get; set; }
 
