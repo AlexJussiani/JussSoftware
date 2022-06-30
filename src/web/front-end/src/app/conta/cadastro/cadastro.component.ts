@@ -1,10 +1,15 @@
-import { ContaService } from './../services/conta.service';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
-import { Usuario } from '../models/usuario';
-import { DisplayMessage, GenericValidator, ValidationMessages } from 'src/app/utils/generic-form-validation';
+import { Router } from '@angular/router';
+
 import { CustomValidators } from '@narik/custom-validators';
 import { fromEvent, merge, Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+
+
+import { ContaService } from './../services/conta.service';
+import { Usuario } from '../models/usuario';
+import { DisplayMessage, GenericValidator, ValidationMessages } from 'src/app/utils/generic-form-validation';
 
 @Component({
   selector: 'app-cadastro',
@@ -18,21 +23,20 @@ export class CadastroComponent implements OnInit, AfterViewInit {
   errors: any[] = []
   cadastroForm: FormGroup;
   usuario: Usuario;
+  mudancasNaoSalvas: boolean;
 
   displayMessage: DisplayMessage = {};
   genericValidator: GenericValidator;
   validationMessages: ValidationMessages;
 
   constructor(private fb: FormBuilder,
-    private contaService: ContaService) {
+    private contaService: ContaService,
+    private router: Router,
+    private toastr: ToastrService) {
       this.validationMessages = {
         nome: {
           required: 'Informe o nome',
           rangeLength: 'O Nome deve possuir pelo menos 5 caracteres'
-        },
-        cpf:{
-          required: 'Informe o CPF',
-          cpf: 'CPF inválido'
         },
         email: {
           required: 'Informe o e-mail',
@@ -59,7 +63,6 @@ export class CadastroComponent implements OnInit, AfterViewInit {
 
     this.cadastroForm = this.fb.group({
       nome: ['', Validators.required],
-      cpf: ['', [Validators.required]],
       email: ['',[Validators.required, Validators.email]],
       senha: pass,
       senhaConfirmacao: passConfirm,
@@ -73,6 +76,7 @@ export class CadastroComponent implements OnInit, AfterViewInit {
 
       merge(...controlBlurs).subscribe(() => {
         this.displayMessage = this.genericValidator.processarMensagens(this.cadastroForm);
+        this.mudancasNaoSalvas = true;
     });
   }
 
@@ -80,8 +84,42 @@ export class CadastroComponent implements OnInit, AfterViewInit {
     if(this.cadastroForm.dirty && this.cadastroForm.valid){
       this.usuario = Object.assign({}, this.usuario, this.cadastroForm.value);
 
-      this.contaService.registrarUsuario(this.usuario);
+    this.contaService.registrarUsuario(this.usuario)
+      .subscribe({
+        next: (sucesso) => this.processarSucesso(sucesso),
+        error: (falha) =>  this.processarFalha(falha)
+      });
     }
+  }
+
+  processarSucesso(response: any){
+    this.cadastroForm.reset();
+    this.errors = [];
+
+    this.contaService.LocalStorage.salvarDadosLocaisUsuario(response);
+    let toast = this.toastr.success('Registro realizado com Sucesso!', 'Bem vindo!!!', {
+      progressAnimation: 'increasing',
+      progressBar: true,
+      timeOut: 1000
+    });
+    if(toast){
+      toast.onHidden.subscribe(() => {
+        this.router.navigate(['/home']);
+      });
+      this.mudancasNaoSalvas = false;
+    }
+  }
+
+  processarFalha(fail: any){
+
+    if(fail.status === 400)
+      this.errors = fail.error.errors.Mensagens;
+    else
+     this.errors = fail.error.errors;
+    this.toastr.error('Ocorreu um erro!', 'Opa :(',{
+      progressAnimation: 'increasing',
+      progressBar: true
+    });
   }
 
 }

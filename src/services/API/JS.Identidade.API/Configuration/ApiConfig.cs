@@ -20,23 +20,23 @@ namespace JS.Identidade.API.Configuration
 
             //services.AddCors();
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("Total",
-            //        builder =>
-            //            builder
-            //            .AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader());
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Development",
+                    builder =>
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
 
-            //    //options.AddPolicy("Production",
-            //    //   builder =>
-            //    //       builder
-            //    //       .WithMethods("GET")
-            //    //       .WithOrigins()
-            //    //       .SetIsOriginAllowedToAllowWildcardSubdomains()
-            //    //       .AllowAnyHeader());
-            //});
+                options.AddPolicy("Production",
+                   builder =>
+                       builder
+                       .WithMethods("GET")
+                       .WithOrigins()
+                       .SetIsOriginAllowedToAllowWildcardSubdomains()
+                       .AllowAnyHeader());
+            });
 
             return services;
         }
@@ -61,6 +61,8 @@ namespace JS.Identidade.API.Configuration
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("Development");
 
             //app.UseCors(x => x.AllowAnyHeader()
             //                  .AllowAnyMethod()
