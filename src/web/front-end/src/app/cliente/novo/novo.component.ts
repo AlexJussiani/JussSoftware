@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControlName, AbstractControl } 
 import { Router } from '@angular/router';
 
 import { Observable, fromEvent, merge } from 'rxjs';
-
+import { MASKS, NgBrazilValidators } from 'ng-brazil';
+import { utilsBr } from 'js-brasil';
 import { ToastrService } from 'ngx-toastr';
 
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
@@ -26,6 +27,7 @@ export class NovoComponent implements OnInit {
   genericValidator: GenericValidator;
   displayMessage: DisplayMessage = {};
 
+  MASKS = utilsBr.MASKS;
   formResult: string = '';
 
   mudancasNaoSalvas: boolean;
@@ -38,6 +40,18 @@ export class NovoComponent implements OnInit {
     this.validationMessages = {
       nome: {
         required: 'Informe o Nome',
+       },
+      cpf: {
+        cpf: 'CPF em formato inválido',
+      },
+      email: {
+        email: 'Email em formato inválido',
+      },
+      telefone: {
+        telefone: 'Telefone em formato inválido',
+      },
+      cep: {
+        cep: 'logradouro informado inválido',
       }
     };
 
@@ -48,19 +62,16 @@ export class NovoComponent implements OnInit {
 
     this.clienteForm = this.fb.group({
       nome: ['', [Validators.required]],
-      telefone: [''],
-      cpf: this.fb.group({
-        numero: ['']
-      }),
-      email: this.fb.group({
-        endereco: ['']
-      }),
-      endereco: this.fb.group({
+      cpf: ['', [Validators.required, NgBrazilValidators.cpf]],
+      email: ['', [Validators.required, Validators.email]],
+      telefone: ['', [NgBrazilValidators.telefone]],
+
+     endereco: this.fb.group({
         logradouro: [''],
         numero: [''],
         complemento: [''],
         bairro: [''],
-        cep: [''],
+        cep: ['', [NgBrazilValidators.cep]],
         cidade: [''],
         estado: ['']
       })
@@ -68,13 +79,21 @@ export class NovoComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+    this.configurarElementosValidacao();
+  }
+
+  configurarElementosValidacao() {
     let controlBlurs: Observable<any>[] = this.formInputElements
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.clienteForm);
-      this.mudancasNaoSalvas = true;
+      this.validarFormulario();
     });
+  }
+
+  validarFormulario() {
+    this.displayMessage = this.genericValidator.processarMensagens(this.clienteForm);
+    this.mudancasNaoSalvas = true;
   }
 
    adicionarCliente() {

@@ -4,10 +4,9 @@ export class Cliente {
     id: string;
     nome: string;
     email: string;
-    documento: string;
+    cpf: string;
     telefone: string;
     excluido: boolean;
     endereco: Endereco;
-    tipoCliente: string;
 }
 
