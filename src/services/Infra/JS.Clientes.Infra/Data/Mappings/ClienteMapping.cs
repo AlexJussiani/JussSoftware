@@ -16,7 +16,7 @@ namespace JS.Clientes.Infra.Data.Mappings
                .HasColumnType("varchar(200)");
 
             builder.Property(c => c.Telefone)
-               .HasColumnType("varchar(12)");
+               .HasColumnType("varchar(15)");
 
             builder.OwnsOne(c => c.Cpf, tf =>
             {
