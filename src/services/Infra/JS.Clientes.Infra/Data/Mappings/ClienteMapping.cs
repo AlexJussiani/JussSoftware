@@ -15,10 +15,12 @@ namespace JS.Clientes.Infra.Data.Mappings
                .IsRequired()
                .HasColumnType("varchar(200)");
 
+            builder.Property(c => c.Telefone)
+               .HasColumnType("varchar(12)");
+
             builder.OwnsOne(c => c.Cpf, tf =>
             {
                 tf.Property(c => c.Numero)
-                    .IsRequired()
                     .HasMaxLength(Cpf.CpfMaxLength)
                     .HasColumnName("Cpf")
                     .HasColumnType($"varchar({Cpf.CpfMaxLength})");
@@ -27,7 +29,6 @@ namespace JS.Clientes.Infra.Data.Mappings
             builder.OwnsOne(c => c.Email, tf =>
             {
                 tf.Property(c => c.Endereco)
-                    .IsRequired()
                     .HasColumnName("Email")
                     .HasColumnType($"varchar({Email.EnderecoMaxLength})");
             });

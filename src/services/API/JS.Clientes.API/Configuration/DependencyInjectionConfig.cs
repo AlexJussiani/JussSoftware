@@ -3,6 +3,8 @@ using JS.Clientes.Infra.Repository;
 using JS.Clientes.Infra.Data;
 using JS.Core.Mediator;
 using JS.Clientes.API.Services;
+using JS.EventSourcing;
+using JS.Core.Data.EventSourcing;
 
 namespace JS.Clientes.API.Configuration
 {
@@ -13,6 +15,10 @@ namespace JS.Clientes.API.Configuration
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IMediatorHandler, MediatorHandler>();
+
+            //Event Sourcing
+            services.AddSingleton<IEventStoreService, EventStoreService>();
+            services.AddSingleton<IEventSourcingRepository, EventSourcingRepository>();
 
             //services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
             //services.AddScoped<IRequestHandler<AdicionarEnderecoCommand, ValidationResult>, ClienteCommandHandler>();

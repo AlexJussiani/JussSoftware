@@ -7,6 +7,7 @@ namespace JS.Clientes.Domain.Models
         public string Nome { get; set; }
         public Email Email { get; set; }
         public Cpf Cpf { get; set; }
+        public string Telefone { get; set; }
         public bool Excluido { get; set; }
 
         //EF Relation

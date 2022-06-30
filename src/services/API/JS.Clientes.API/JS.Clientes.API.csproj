@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\building blocks\JS.Core\JS.Core.csproj" />
+    <ProjectReference Include="..\..\..\building blocks\JS.EventSourcing\JS.EventSourcing.csproj" />
     <ProjectReference Include="..\..\..\building blocks\Js.Logging\JS.Logging.csproj" />
     <ProjectReference Include="..\..\..\building blocks\JS.WebAPI.Core\JS.WebAPI.Core.csproj" />
     <ProjectReference Include="..\..\Infra\JS.Clientes.Infra\JS.Clientes.Infra.csproj" />
