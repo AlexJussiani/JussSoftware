@@ -7,9 +7,9 @@ import { Observable, fromEvent, merge } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
-import { Fornecedor } from '../models/fornecedor';
+import { Cliente } from '../models/cliente';
 import { Endereco } from '../models/endereco';
-import { FornecedorService } from '../services/fornecedor.service';
+import { ClienteService } from '../services/cliente.service';
 
 @Component({
   selector: 'app-editar',
@@ -21,24 +21,23 @@ export class EditarComponent implements OnInit {
 
   errors: any[] = [];
   errorsEndereco: any[] = [];
-  fornecedorForm: FormGroup;
+  clienteForm: FormGroup;
   enderecoForm: FormGroup;
 
-  fornecedor: Fornecedor = new Fornecedor();
+  cliente: Cliente = new Cliente();
   endereco: Endereco = new Endereco();
 
   validationMessages: ValidationMessages;
   genericValidator: GenericValidator;
   displayMessage: DisplayMessage = {};
-  textoDocumento: string = '';
+  textoCPF: string = '';
 
-  tipoFornecedor: number;
   formResult: string = '';
 
   mudancasNaoSalvas: boolean;
 
   constructor(private fb: FormBuilder,
-    private fornecedorService: FornecedorService,
+    private clienteService: ClienteService,
     private router: Router,
     private toastr: ToastrService,
     private route: ActivatedRoute) {
@@ -46,56 +45,35 @@ export class EditarComponent implements OnInit {
     this.validationMessages = {
       nome: {
         required: 'Informe o Nome',
-      },
-      documento: {
-        required: 'Informe o Documento'
-      },
-      logradouro: {
-        required: 'Informe o Logradouro',
-      },
-      numero: {
-        required: 'Informe o Número',
-      },
-      bairro: {
-        required: 'Informe o Bairro',
-      },
-      cep: {
-        required: 'Informe o CEP'
-      },
-      cidade: {
-        required: 'Informe a Cidade',
-      },
-      estado: {
-        required: 'Informe o Estado',
       }
     };
 
     this.genericValidator = new GenericValidator(this.validationMessages);
 
-    this.fornecedorService.obterPorId(route.params['id'])
-      .subscribe(fornecedor => this.fornecedor = fornecedor);
+    this.clienteService.obterPorId(route.params['id'])
+      .subscribe(cliente => this.cliente = cliente);
   }
 
   ngOnInit() {
 
-    this.fornecedorForm = this.fb.group({
+    this.clienteForm = this.fb.group({
       id: '',
       nome: ['', [Validators.required]],
-      documento: '',
-      ativo: ['', [Validators.required]],
-      tipoFornecedor: ['', [Validators.required]]
+      cpf: '',
+      email: '',
+      telefone: ''
     });
 
     this.enderecoForm = this.fb.group({
       id: '',
-      logradouro: ['', [Validators.required]],
-      numero: ['', [Validators.required]],
-      complemento: [''],
-      bairro: ['', [Validators.required]],
-      cep: ['', [Validators.required]],
-      cidade: ['', [Validators.required]],
-      estado: ['', [Validators.required]],
-      fornecedorId: ''
+      logradouro: '',
+      numero: '',
+      complemento:  '',
+      bairro:  '',
+      cep:  '',
+      cidade: '',
+      estado:  '',
+      clienteId: ''
     });
   }
 
@@ -104,17 +82,17 @@ export class EditarComponent implements OnInit {
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.fornecedorForm);
+      this.displayMessage = this.genericValidator.processarMensagens(this.clienteForm);
       this.mudancasNaoSalvas = true;
     });
   }
 
-  editarFornecedor() {
-    if (this.fornecedorForm.dirty && this.fornecedorForm.valid) {
+  editarCliente() {
+    if (this.clienteForm.dirty && this.clienteForm.valid) {
 
-      this.fornecedor = Object.assign({}, this.fornecedor, this.fornecedorForm.value);
+      this.cliente = Object.assign({}, this.cliente, this.clienteForm.value);
 
-      this.fornecedorService.atualizarFornecedor(this.fornecedor)
+      this.clienteService.atualizarCliente(this.cliente)
         .subscribe(
           sucesso => { this.processarSucesso(sucesso) },
           falha => { this.processarFalha(falha) }
@@ -127,10 +105,10 @@ export class EditarComponent implements OnInit {
   processarSucesso(response: any) {
     this.errors = [];
 
-    let toast = this.toastr.success('Fornecedor atualizado com sucesso!', 'Sucesso!');
+    let toast = this.toastr.success('Cliente atualizado com sucesso!', 'Sucesso!');
     if (toast) {
       toast.onHidden.subscribe(() => {
-        this.router.navigate(['/fornecedores/listar-todos']);
+        this.router.navigate(['/clientes/listar-todos']);
       });
     }
   }

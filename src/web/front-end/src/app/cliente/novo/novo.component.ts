@@ -7,8 +7,8 @@ import { Observable, fromEvent, merge } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
-import { Fornecedor } from '../models/fornecedor';
-import { FornecedorService } from '../services/fornecedor.service';
+import { Cliente } from '../models/cliente';
+import { ClienteService } from '../services/cliente.service';
 
 @Component({
   selector: 'app-novo',
@@ -19,8 +19,8 @@ export class NovoComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
   errors: any[] = [];
-  fornecedorForm: FormGroup;
-  fornecedor: Fornecedor = new Fornecedor();
+  clienteForm: FormGroup;
+  cliente: Cliente = new Cliente();
 
   validationMessages: ValidationMessages;
   genericValidator: GenericValidator;
@@ -31,34 +31,13 @@ export class NovoComponent implements OnInit {
   mudancasNaoSalvas: boolean;
 
   constructor(private fb: FormBuilder,
-    private fornecedorService: FornecedorService,
+    private clienteService: ClienteService,
     private router: Router,
     private toastr: ToastrService) {
 
     this.validationMessages = {
       nome: {
         required: 'Informe o Nome',
-      },
-      documento: {
-        required: 'Informe o Documento',
-      },
-      logradouro: {
-        required: 'Informe o Logradouro',
-      },
-      numero: {
-        required: 'Informe o Número',
-      },
-      bairro: {
-        required: 'Informe o Bairro',
-      },
-      cep: {
-        required: 'Informe o CEP'
-      },
-      cidade: {
-        required: 'Informe a Cidade',
-      },
-      estado: {
-        required: 'Informe o Estado',
       }
     };
 
@@ -67,11 +46,24 @@ export class NovoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.fornecedorForm = this.fb.group({
+    this.clienteForm = this.fb.group({
       nome: ['', [Validators.required]],
-      documento: ['', [Validators.required]],
-      ativo: ['', [Validators.required]],
-      tipoFornecedor: ['', [Validators.required]]     
+      telefone: [''],
+      cpf: this.fb.group({
+        numero: ['']
+      }),
+      email: this.fb.group({
+        endereco: ['']
+      }),
+      endereco: this.fb.group({
+        logradouro: [''],
+        numero: [''],
+        complemento: [''],
+        bairro: [''],
+        cep: [''],
+        cidade: [''],
+        estado: ['']
+      })
     });
   }
 
@@ -80,17 +72,17 @@ export class NovoComponent implements OnInit {
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.fornecedorForm);
+      this.displayMessage = this.genericValidator.processarMensagens(this.clienteForm);
       this.mudancasNaoSalvas = true;
     });
   }
 
-   adicionarFornecedor() {
-    if (this.fornecedorForm.dirty && this.fornecedorForm.valid) {
-      this.fornecedor = Object.assign({}, this.fornecedor, this.fornecedorForm.value);
-      this.formResult = JSON.stringify(this.fornecedor);
+   adicionarCliente() {
+    if (this.clienteForm.dirty && this.clienteForm.valid) {
+      this.cliente = Object.assign({}, this.cliente, this.clienteForm.value);
+      this.formResult = JSON.stringify(this.cliente);
 
-      this.fornecedorService.novoFornecedor(this.fornecedor)
+      this.clienteService.novoCliente(this.cliente)
         .subscribe(
           sucesso => { this.processarSucesso(sucesso) },
           falha => { this.processarFalha(falha) }
@@ -101,13 +93,13 @@ export class NovoComponent implements OnInit {
   }
 
   processarSucesso(response: any) {
-    this.fornecedorForm.reset();
+    this.clienteForm.reset();
     this.errors = [];
 
-    let toast = this.toastr.success('Fornecedor cadastrado com sucesso!', 'Sucesso!');
+    let toast = this.toastr.success('Cliente cadastrado com sucesso!', 'Sucesso!');
     if (toast) {
       toast.onHidden.subscribe(() => {
-        this.router.navigate(['/fornecedores/listar-todos']);
+        this.router.navigate(['/clientes/listar-todos']);
       });
     }
   }

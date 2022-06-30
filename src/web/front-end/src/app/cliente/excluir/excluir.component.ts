@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Fornecedor } from '../models/fornecedor';
+import { Cliente } from '../models/cliente';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { FornecedorService } from '../services/fornecedor.service';
+import { ClienteService } from '../services/cliente.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -11,20 +11,20 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ExcluirComponent {
 
-  fornecedor: Fornecedor = new Fornecedor();
+  cliente: Cliente = new Cliente();
 
   constructor(
-    private fornecedorService: FornecedorService,
+    private clienteService: ClienteService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService) {
 
-    this.fornecedorService.obterPorId(route.params['id'])
-      .subscribe(fornecedor => this.fornecedor = fornecedor);
+    this.clienteService.obterPorId(route.params['id'])
+      .subscribe(cliente => this.cliente = cliente);
   }
 
   excluirEvento() {
-    this.fornecedorService.excluirFornecedor(this.fornecedor.id)
+    this.clienteService.excluirCliente(this.cliente.id)
       .subscribe(
         evento => { this.sucessoExclusao(evento) },
         error => { this.falha() }
@@ -33,10 +33,10 @@ export class ExcluirComponent {
 
   sucessoExclusao(evento: any) {
 
-    const toast = this.toastr.success('Fornecedor excluido com Sucesso!', 'Good bye :D');
+    const toast = this.toastr.success('Cliente excluido com Sucesso!', 'Good bye :D');
     if (toast) {
       toast.onHidden.subscribe(() => {
-        this.router.navigate(['/fornecedores/listar-todos']);
+        this.router.navigate(['/clientees/listar-todos']);
       });
     }
   }

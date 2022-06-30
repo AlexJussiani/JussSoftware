@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NovoComponent } from './novo/novo.component';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
-import { FornecedorRoutingModule } from './fornecedor.route';
-import { FornecedorAppComponent } from './fornecedor.app.component';
+import { ClienteRoutingModule } from './cliente.route';
+import { ClienteAppComponent } from './cliente.app.component';
 import { ListaComponent } from './lista/lista.component';
-import { FornecedorService } from './services/fornecedor.service';
+import { ClienteService } from './services/cliente.service';
 
 import { EditarComponent } from './editar/editar.component';
 import { ExcluirComponent } from './excluir/excluir.component';
@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    FornecedorAppComponent,
+    ClienteAppComponent,
     NovoComponent,
     ListaComponent,
     EditarComponent,
@@ -23,13 +23,13 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     CommonModule,
-    FornecedorRoutingModule,
+    ClienteRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
   ],
   providers: [
-    FornecedorService
+    ClienteService
   ]
 })
-export class FornecedorModule { }
+export class clienteModule { }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'fornecedor-app-root',
+  selector: 'cliente-app-root',
   template: '<router-outlet></router-outlet>'
 })
-export class FornecedorAppComponent { }
+export class ClienteAppComponent { }

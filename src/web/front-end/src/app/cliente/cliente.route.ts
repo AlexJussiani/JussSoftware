@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { FornecedorAppComponent } from './fornecedor.app.component';
+import { ClienteAppComponent } from './cliente.app.component';
 import { NovoComponent } from './novo/novo.component';
 import { ListaComponent } from './lista/lista.component';
 import { EditarComponent } from './editar/editar.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { ExcluirComponent } from './excluir/excluir.component';
 
-const fornecedorRouterConfig: Routes = [
+const clienteRouterConfig: Routes = [
     {
-        path: '', component: FornecedorAppComponent,
+        path: '', component: ClienteAppComponent,
         children: [
             { path: 'listar-todos', component: ListaComponent },
             { path: 'adicionar-novo', component: NovoComponent },
@@ -23,8 +23,8 @@ const fornecedorRouterConfig: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forChild(fornecedorRouterConfig)
+        RouterModule.forChild(clienteRouterConfig)
     ],
     exports: [RouterModule]
 })
-export class FornecedorRoutingModule { }
+export class ClienteRoutingModule { }
