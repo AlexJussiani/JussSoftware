@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { Observable } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 
 import { BaseService } from 'src/app/services/base.service';
 import { Cliente } from '../models/cliente';
+import { CepConsulta } from "../models/endereco";
 
 @Injectable()
 export class ClienteService extends BaseService {
@@ -31,7 +32,12 @@ export class ClienteService extends BaseService {
     }
 
     novoCliente(cliente: Cliente): Observable<Cliente> {
-        return new Observable<Cliente>();
+      return this.http
+      .post(this.UrlServiceV1 + "clientes", cliente, this.ObterHeaderJson())
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError)
+      );
     }
 
     atualizarCliente(cliente: Cliente): Observable<Cliente> {
@@ -40,5 +46,11 @@ export class ClienteService extends BaseService {
 
     excluirCliente(id: string): Observable<Cliente> {
         return new Observable<Cliente>();
+    }
+
+    consultaCep(cep: string): Observable<CepConsulta> {
+      return this.http
+      .get<CepConsulta>(`http://viacep.com.br/ws/${cep}/json/`)
+      .pipe(catchError(super.serviceError))
     }
 }

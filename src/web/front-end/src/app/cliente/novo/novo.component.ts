@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
 import { Cliente } from '../models/cliente';
 import { ClienteService } from '../services/cliente.service';
+import { CepConsulta } from '../models/endereco';
+import { StringUtils } from 'src/app/utils/string-utils';
 
 @Component({
   selector: 'app-novo',
@@ -126,5 +128,28 @@ export class NovoComponent implements OnInit {
   processarFalha(fail: any) {
     this.errors = fail.error.errors;
     this.toastr.error('Ocorreu um erro!', 'Opa :(');
+  }
+
+  buscarCep(cep: any){
+  cep = StringUtils.somenteNumeros(cep.value);
+  if(cep.length < 8) return;
+
+    this.clienteService.consultaCep(cep)
+    .subscribe({
+      next: (cepRetorno) => this.preencherEnderecoConsulta(cepRetorno),
+      error: (erro) => this.errors.push(erro)
+    });
+  }
+
+  preencherEnderecoConsulta(cepConsulta: CepConsulta){
+    this.clienteForm.patchValue({
+      endereco: {
+        logradouro: cepConsulta.logradouro,
+        bairro: cepConsulta.bairro,
+        cep: cepConsulta.cep,
+        cidade: cepConsulta.localidade,
+        estado: cepConsulta.uf
+      }
+    });
   }
 }
