@@ -3,11 +3,11 @@ import { Endereco } from './endereco';
 export class Cliente {
     id: string;
     nome: string;
-    email: Email;
+    email?: Email;
     cpf: Cpf;
     telefone: string;
     excluido: boolean;
-    endereco: Endereco;
+    endereco?: Endereco;
     notificacoes?: any;
 }
 
@@ -16,5 +16,5 @@ export class Cpf {
 }
 
 export class Email {
-  endereco: string
+  endereco?: string
 }

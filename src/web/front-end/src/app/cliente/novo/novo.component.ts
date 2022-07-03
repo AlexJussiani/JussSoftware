@@ -115,7 +115,8 @@ export class NovoComponent implements OnInit {
       this.cliente.endereco.cep = StringUtils.somenteNumeros(this.cliente.endereco.cep);
       this.cliente.cpf.numero = StringUtils.somenteNumeros(this.cliente.cpf.numero);
       this.cliente.telefone = StringUtils.somenteNumeros(this.cliente.telefone);
-
+      this.verificarCadastroEndereco();
+      console.log('teste 3: ', JSON.stringify(this.cliente))
       this.clienteService.novoCliente(this.cliente)
         .subscribe({
           next: (sucesso) => { this.processarSucesso(sucesso) },
@@ -170,5 +171,18 @@ export class NovoComponent implements OnInit {
         estado: cepConsulta.uf
       }
     });
+  }
+  //Para não criar um registro no banco de dados com o endereço vazio
+  verificarCadastroEndereco(){
+    if(
+      this.cliente.endereco.bairro.length === 0
+      && this.cliente.endereco.cep.length === 0
+      && this.cliente.endereco.cidade.length === 0
+      && this.cliente.endereco.complemento.length === 0
+      && this.cliente.endereco.estado.length === 0
+      && this.cliente.endereco.logradouro.length === 0
+      && this.cliente.endereco.numero.length === 0
+    )
+    delete this.cliente.endereco;
   }
 }

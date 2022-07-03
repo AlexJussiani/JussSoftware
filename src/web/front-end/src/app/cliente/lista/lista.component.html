@@ -21,13 +21,13 @@
                 {{ cliente.nome }}
             </td>
             <td>
-                {{cliente.email.endereco }}
+                {{cliente.email?.endereco }}
             </td>
             <td>
-              {{cliente.cpf.numero }}
+              {{cliente.cpf?.numero }}
           </td>
           <td>
-            {{cliente.telefone }}
+            {{cliente?.telefone }}
         </td>
             <td class="text-right">
                 <a class="btn btn-info" [routerLink]="['/clientes/detalhes',cliente.id]">

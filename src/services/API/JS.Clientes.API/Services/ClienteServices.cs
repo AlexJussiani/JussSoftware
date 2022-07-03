@@ -40,17 +40,24 @@ namespace JS.Clientes.API.Services
 
         public async Task<ValidationResult> CadastrarCliente(Cliente cliente)
         {
-            var cpf = await _clienteRepository.ObterPorCpf(cliente.Cpf.Numero);
-            if (cpf != null) { 
-            AdicionarErro("Este CPF já está em uso.");
-                return ValidationResult;
+            if (!string.IsNullOrEmpty(cliente.Cpf.Numero))
+            {
+                var cpf = await _clienteRepository.ObterPorCpf(cliente.Cpf.Numero);
+                if (cpf != null)
+                {
+                    AdicionarErro("Este CPF já está em uso.");
+                    return ValidationResult;
+                }
             }
 
-            var email = await _clienteRepository.ObterPorEmail(cliente.Email.Endereco);
-            if (email != null)
+            if (!string.IsNullOrEmpty(cliente.Email.Endereco))
             {
-                AdicionarErro("Este Email já está em uso.");
-                return ValidationResult;
+                var email = await _clienteRepository.ObterPorEmail(cliente.Email.Endereco);
+                if (email != null)
+                {
+                    AdicionarErro("Este Email já está em uso.");
+                    return ValidationResult;
+                }
             }
             _clienteRepository.Adicionar(cliente);
 

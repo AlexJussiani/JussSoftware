@@ -32,7 +32,6 @@ export class ClienteService extends BaseService {
               map((obj) => obj),
               catchError(super.serviceError)
             );
-            console.log('teste: ', teste);
             return teste;
     }
 

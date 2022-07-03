@@ -13,8 +13,11 @@ namespace JS.Core.DomainObjects
 
         public Cpf(string numero)
         {
-            if (!Validar(numero)) throw new DomainException("CPF inválido");
-            Numero = numero;
+            if ((!string.IsNullOrEmpty(numero)))
+            {
+                if (!Validar(numero)) throw new DomainException("CPF inválido");
+                Numero = numero;
+            }
         }
 
         public static bool Validar(string cpf)

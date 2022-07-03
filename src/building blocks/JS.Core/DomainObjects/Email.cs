@@ -13,8 +13,10 @@ namespace JS.Core.DomainObjects
 
         public Email(string endereco)
         {
-            if (!Validar(endereco)) throw new DomainException("E-mail inválido");
-            Endereco = endereco;
+            if ((!string.IsNullOrEmpty(endereco))) {
+                if (!Validar(endereco)) throw new DomainException("E-mail inválido");
+                Endereco = endereco;
+            }
         }
 
         public static bool Validar(string email)
