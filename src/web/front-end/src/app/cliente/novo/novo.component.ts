@@ -67,11 +67,11 @@ export class NovoComponent implements OnInit {
     nome: ['', [Validators.required]],
 
     cpf: this.fb.group({
-      numero: ['', [Validators.required, NgBrazilValidators.cpf]]
+      numero: ['', [NgBrazilValidators.cpf]]
     }),
 
     email: this.fb.group({
-      endereco: ['', [Validators.required, Validators.email]],
+      endereco: ['', [Validators.email]],
     }),
 
     telefone: ['', [NgBrazilValidators.telefone]],

@@ -10,7 +10,6 @@ using JS.EventSourcing;
 using JS.Core.Data.EventSourcing;
 using Microsoft.AspNetCore.Http;
 using JS.WebAPI.Core.Usuario;
-using NSE.WebAPI.Core.Usuario;
 
 namespace JS.Produtos.API.Configuration
 {
