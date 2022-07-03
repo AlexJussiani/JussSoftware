@@ -1,4 +1,4 @@
-﻿namespace NSE.WebAPI.Core.Identidade
+﻿namespace JS.WebAPI.Core.Identidade
 { 
     public class AppSettings
     {

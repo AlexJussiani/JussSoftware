@@ -2,12 +2,14 @@
 using JS.Clientes.Domain.Models;
 using JS.WebAPI.Core.Controllers;
 using JS.WebAPI.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace JS.Clientes.API.Controllers
 {
+    [Authorize]
     [Route("api/clientes")]
     public class ClientesController : MainController
     {

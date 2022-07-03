@@ -1,4 +1,5 @@
 using JS.Clientes.API.Configuration;
+using JS.WebAPI.Core.Identidade;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,7 @@ namespace JS.Clientes.API
         {
             services.AddApiConfiguration(Configuration);
 
-            //services.AddJwtConfiguration(Configuration);
+            services.AddJwtConfiguration(Configuration);
 
             services.AddSwaggerConfiguration();
 

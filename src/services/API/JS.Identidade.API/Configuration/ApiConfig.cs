@@ -1,5 +1,6 @@
 ﻿using JS.Identidade.API.Services;
 using JS.Identidade.Domain.Models;
+using JS.WebAPI.Core.Identidade;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

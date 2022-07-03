@@ -11,7 +11,7 @@ export class ContaService extends BaseService{
 
   registrarUsuario(usuario: Usuario): Observable<Usuario>{
     let response = this.http
-      .post(this.UrlServiceV1 + 'identidade/nova-conta', usuario, this.ObterHeaderJson())
+      .post(this.UrlServiceIdentidadeV1 + 'identidade/nova-conta', usuario, this.ObterHeaderJson())
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -21,7 +21,7 @@ export class ContaService extends BaseService{
 
   login(usuario: Usuario): Observable<Usuario>{
     let response = this.http
-    .post(this.UrlServiceV1 + 'identidade/autenticar', usuario, this.ObterHeaderJson())
+    .post(this.UrlServiceIdentidadeV1 + 'identidade/autenticar', usuario, this.ObterHeaderJson())
     .pipe(
       map(this.extractData),
       catchError(this.serviceError));

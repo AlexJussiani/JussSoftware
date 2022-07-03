@@ -5,6 +5,8 @@ using JS.Core.Mediator;
 using JS.Clientes.API.Services;
 using JS.EventSourcing;
 using JS.Core.Data.EventSourcing;
+using JS.WebAPI.Core.Usuario;
+using Microsoft.AspNetCore.Http;
 
 namespace JS.Clientes.API.Configuration
 {
@@ -28,6 +30,9 @@ namespace JS.Clientes.API.Configuration
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<ClientesContext>();
             services.AddScoped<ClienteServices>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
         }
     }
 }

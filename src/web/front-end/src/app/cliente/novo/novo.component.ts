@@ -1,3 +1,4 @@
+import { Page } from './../../models/Pagination';
 import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControlName, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -43,10 +44,10 @@ export class NovoComponent implements OnInit {
       nome: {
         required: 'Informe o Nome',
        },
-      cpf: {
+      numero: {
         cpf: 'CPF em formato inválido',
       },
-      email: {
+      endereco: {
         email: 'Email em formato inválido',
       },
       telefone: {
@@ -63,10 +64,17 @@ export class NovoComponent implements OnInit {
   ngOnInit() {
 
     this.clienteForm = this.fb.group({
-      nome: ['', [Validators.required]],
-      cpf: ['', [Validators.required, NgBrazilValidators.cpf]],
-      email: ['', [Validators.required, Validators.email]],
-      telefone: ['', [NgBrazilValidators.telefone]],
+    nome: ['', [Validators.required]],
+
+    cpf: this.fb.group({
+      numero: ['', [Validators.required, NgBrazilValidators.cpf]]
+    }),
+
+    email: this.fb.group({
+      endereco: ['', [Validators.required, Validators.email]],
+    }),
+
+    telefone: ['', [NgBrazilValidators.telefone]],
 
      endereco: this.fb.group({
         logradouro: [''],
@@ -100,14 +108,19 @@ export class NovoComponent implements OnInit {
 
    adicionarCliente() {
     if (this.clienteForm.dirty && this.clienteForm.valid) {
+
       this.cliente = Object.assign({}, this.cliente, this.clienteForm.value);
       this.formResult = JSON.stringify(this.cliente);
 
+      this.cliente.endereco.cep = StringUtils.somenteNumeros(this.cliente.endereco.cep);
+      this.cliente.cpf.numero = StringUtils.somenteNumeros(this.cliente.cpf.numero);
+      this.cliente.telefone = StringUtils.somenteNumeros(this.cliente.telefone);
+
       this.clienteService.novoCliente(this.cliente)
-        .subscribe(
-          sucesso => { this.processarSucesso(sucesso) },
-          falha => { this.processarFalha(falha) }
-        );
+        .subscribe({
+          next: (sucesso) => { this.processarSucesso(sucesso) },
+          error: (falha) => { this.processarFalha(falha) }
+        });
 
       this.mudancasNaoSalvas = false;
     }
@@ -126,8 +139,14 @@ export class NovoComponent implements OnInit {
   }
 
   processarFalha(fail: any) {
-    this.errors = fail.error.errors;
-    this.toastr.error('Ocorreu um erro!', 'Opa :(');
+    if(fail.status === 400)
+      this.errors = fail.error.errors.Mensagens;
+    else
+     this.errors = fail.error.errors;
+    this.toastr.error('Ocorreu um erro!', 'Opa :(',{
+      progressAnimation: 'increasing',
+      progressBar: true
+    });
   }
 
   buscarCep(cep: any){

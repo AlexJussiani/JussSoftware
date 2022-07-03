@@ -24,24 +24,23 @@
                   </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group"  formGroupName="cpf">
                   <label class="control-label">CPF</label>
                   <div>
-                      <input class="form-control" id="cpf" type="text" formControlName="cpf" cpf [textMask]="{mask: MASKS.cpf.textMask}" [ngClass]="{'is-invalid': displayMessage.cpf}" />
-
-                      <span class="text-danger" *ngIf="displayMessage.cpf">
-                          <p [innerHTML]="displayMessage.cpf"></p>
+                      <input class="form-control" id="numero" type="text" formControlName="numero" cpf [textMask]="{mask: MASKS.cpf.textMask}" [ngClass]="{'is-invalid': displayMessage.numero}" />
+                      <span class="text-danger" *ngIf="displayMessage.numero">
+                          <p [innerHTML]="displayMessage.numero"></p>
                       </span>
                   </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" formGroupName="email">
                 <label class="control-label">Email</label>
                 <div>
-                    <input class="form-control" id="text" type="email" formControlName="email" [ngClass]="{'is-invalid': displayMessage.email}" />
+                    <input class="form-control" id="text" type="text" formControlName="endereco" [ngClass]="{'is-invalid': displayMessage.endereco}" />
 
-                    <span class="text-danger" *ngIf="displayMessage.email">
-                        <p [innerHTML]="displayMessage.email"></p>
+                    <span class="text-danger" *ngIf="displayMessage.endereco">
+                        <p [innerHTML]="displayMessage.endereco"></p>
                     </span>
                 </div>
               </div>

@@ -9,7 +9,6 @@ using MediatR;
 using JS.EventSourcing;
 using JS.Core.Data.EventSourcing;
 using JS.WebAPI.Core.Usuario;
-using NSE.WebAPI.Core.Usuario;
 using Microsoft.AspNetCore.Http;
 
 namespace JS.Contas.API.Configuration

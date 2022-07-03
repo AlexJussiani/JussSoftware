@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace NSE.WebAPI.Core.Identidade
+namespace JS.WebAPI.Core.Identidade
 {
     public static class JwtConfig
     {

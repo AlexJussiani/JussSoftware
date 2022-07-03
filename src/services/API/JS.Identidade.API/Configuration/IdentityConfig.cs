@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetDevPack.Security.JwtSigningCredentials;
-using NSE.WebAPI.Core.Identidade;
+using JS.WebAPI.Core.Identidade;
 
 namespace JS.Identidade.API.Configuration
 {

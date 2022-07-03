@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
-namespace NSE.WebAPI.Core.Usuario
+namespace JS.WebAPI.Core.Usuario
 {
     public static class ClaimsPrincipalExtensions
     {

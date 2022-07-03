@@ -7,24 +7,33 @@ import { catchError, map } from "rxjs/operators";
 import { BaseService } from 'src/app/services/base.service';
 import { Cliente } from '../models/cliente';
 import { CepConsulta } from "../models/endereco";
+import { Page } from "src/app/models/Pagination";
 
 @Injectable()
 export class ClienteService extends BaseService {
 
-  cliente: Cliente = new Cliente();
+  pageIndex = 1;
+  pagesize = 50;
+  query = ''
+
 
     constructor(private http: HttpClient) { super()
 
-        this.cliente.nome = "Teste Fake"
-        this.cliente.cpf = "32165498754"
-        this.cliente.excluido = false
-        this.cliente.telefone = '43999365610'
+        // this.cliente.nome = "Teste Fake"
+        // this.cliente.cpf.numero = "32165498754"
+        // this.cliente.excluido = false
+        // this.cliente.telefone = '43999365610'
     }
 
-    obterTodos(): Observable<Cliente[]> {
-        return this.http
-            .get<Cliente[]>(this.UrlServiceV1 + "clientes")
-            .pipe(catchError(super.serviceError));
+    obterTodos(): Observable<Page<Cliente>>{
+        let teste =  this.http
+             .get<Page<Cliente>>(`${this.UrlServiceClientesV1}clientes?ps=${this.pagesize}&page=${this.pageIndex}&q=${this.query}`, this.ObterAuthHeaderJson())
+            .pipe(
+              map((obj) => obj),
+              catchError(super.serviceError)
+            );
+            console.log('teste: ', teste);
+            return teste;
     }
 
     obterPorId(id: string): Observable<Cliente> {
@@ -33,7 +42,7 @@ export class ClienteService extends BaseService {
 
     novoCliente(cliente: Cliente): Observable<Cliente> {
       return this.http
-      .post(this.UrlServiceV1 + "clientes", cliente, this.ObterHeaderJson())
+      .post(this.UrlServiceClientesV1 + "clientes", cliente, this.ObterAuthHeaderJson())
       .pipe(
         map(super.extractData),
         catchError(super.serviceError)

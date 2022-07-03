@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using JS.WebAPI.Core.Usuario;
 using Microsoft.AspNetCore.Http;
 
-namespace NSE.WebAPI.Core.Usuario
+namespace JS.WebAPI.Core.Usuario
 {
     public class AspNetUser : IAspNetUser
     {

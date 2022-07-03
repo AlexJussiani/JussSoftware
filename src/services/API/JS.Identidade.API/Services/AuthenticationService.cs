@@ -1,12 +1,10 @@
 ﻿using JS.Identidade.API.Extensions;
 using JS.Identidade.Domain.Models;
 using JS.Identidade.Infra.Data;
+using JS.WebAPI.Core.Identidade;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NetDevPack.Security.JwtSigningCredentials.Interfaces;
-using NSE.WebAPI.Core.Identidade;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
