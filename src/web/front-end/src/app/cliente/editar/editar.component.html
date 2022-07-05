@@ -26,24 +26,24 @@
                   </div>
               </div>
 
-              <div class="form-group">
+               <div class="form-group" formGroupName="cpf">
                   <label class="control-label">CPF</label>
                   <div>
-                      <input class="form-control" id="documento" type="text" [ngClass]="{'is-invalid': displayMessage.cpf}" />
+                      <input class="form-control" id="cpf" placeholder="CPF" formControlName="numero" type="text" [ngClass]="{'is-invalid': displayMessage?.numero}" />
 
-                      <span class="text-danger" *ngIf="displayMessage.cpf">
-                          <p [innerHTML]="displayMessage.cpf"></p>
+                      <span class="text-danger" *ngIf="displayMessage.numero">
+                          <p [innerHTML]="displayMessage.numero"></p>
                       </span>
                   </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group"  formGroupName="email">
                 <label class="control-label">Email</label>
                 <div>
-                    <input class="form-control" id="documento" type="text" [ngClass]="{'is-invalid': displayMessage.email}" />
+                    <input class="form-control" id="endereco" placeholder="endereco" formControlName="endereco" type="text" [ngClass]="{'is-invalid': displayMessage?.endereco}" />
 
-                    <span class="text-danger" *ngIf="displayMessage.email">
-                        <p [innerHTML]="displayMessage.email"></p>
+                    <span class="text-danger" *ngIf="displayMessage.endereco">
+                        <p [innerHTML]="displayMessage.endereco"></p>
                     </span>
                 </div>
               </div>
@@ -51,13 +51,13 @@
               <div class="form-group">
                 <label class="control-label">Telefone</label>
                 <div>
-                    <input class="form-control" id="documento" type="text" [ngClass]="{'is-invalid': displayMessage.telefone}" />
+                    <input class="form-control" id="telefone" type="text" placeholder="Nome" formControlName="telefone" [ngClass]="{'is-invalid': displayMessage?.telefone}" />
 
                     <span class="text-danger" *ngIf="displayMessage.telefone">
                         <p [innerHTML]="displayMessage.telefone"></p>
                     </span>
                 </div>
-              </div>
+              </div> -->
 
             </div>
         </div>
@@ -107,25 +107,25 @@
                     <tbody>
                         <tr>
                             <td>
-                                {{ cliente.endereco.logradouro }}
+                                {{ cliente.endereco?.logradouro }}
                             </td>
                             <td>
-                                {{ cliente.endereco.numero }}
+                                {{ cliente.endereco?.numero }}
                             </td>
                             <td>
-                                {{ cliente.endereco.complemento }}
+                                {{ cliente.endereco?.complemento }}
                             </td>
                             <td>
-                                {{ cliente.endereco.bairro }}
+                                {{ cliente.endereco?.bairro }}
                             </td>
                             <td>
-                                {{ cliente.endereco.cep }}
+                                {{ cliente.endereco?.cep }}
                             </td>
                             <td>
-                                {{ cliente.endereco.cidade }}
+                                {{ cliente.endereco?.cidade }}
                             </td>
                             <td>
-                                {{ cliente.endereco.estado }}
+                                {{ cliente.endereco?.estado }}
                             </td>
                             <td>
                                 <a class="btn btn-info">

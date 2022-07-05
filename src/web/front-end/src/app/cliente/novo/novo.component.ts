@@ -116,7 +116,6 @@ export class NovoComponent implements OnInit {
       this.cliente.cpf.numero = StringUtils.somenteNumeros(this.cliente.cpf.numero);
       this.cliente.telefone = StringUtils.somenteNumeros(this.cliente.telefone);
       this.verificarCadastroEndereco();
-      console.log('teste 3: ', JSON.stringify(this.cliente))
       this.clienteService.novoCliente(this.cliente)
         .subscribe({
           next: (sucesso) => { this.processarSucesso(sucesso) },

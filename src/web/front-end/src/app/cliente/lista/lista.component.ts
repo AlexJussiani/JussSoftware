@@ -19,8 +19,7 @@ export class ListaComponent implements OnInit {
     this.clienteService.obterTodos()
       .subscribe({
         next: (page) => {this.page = page,
-          this.clientes = this.page.list
-          console.log('teste1: ', this.clientes);},
+          this.clientes = this.page.list},
 
         error: () => this.errorMessage
       });

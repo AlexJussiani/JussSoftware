@@ -7,6 +7,7 @@ import { ListaComponent } from './lista/lista.component';
 import { EditarComponent } from './editar/editar.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { ExcluirComponent } from './excluir/excluir.component';
+import { ClienteResolve } from './services/cliente.resolve';
 
 const clienteRouterConfig: Routes = [
     {
@@ -14,7 +15,12 @@ const clienteRouterConfig: Routes = [
         children: [
             { path: 'listar-todos', component: ListaComponent },
             { path: 'adicionar-novo', component: NovoComponent },
-            { path: 'editar/:id', component: EditarComponent },
+            {
+              path: 'editar/:id', component: EditarComponent,
+              resolve: {
+                cliente: ClienteResolve
+              }
+            },
             { path: 'detalhes/:id', component: DetalhesComponent },
             { path: 'excluir/:id', component: ExcluirComponent }
         ]

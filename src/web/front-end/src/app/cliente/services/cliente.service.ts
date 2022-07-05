@@ -36,7 +36,9 @@ export class ClienteService extends BaseService {
     }
 
     obterPorId(id: string): Observable<Cliente> {
-        return new Observable<Cliente>();
+        return this.http
+          .get<Cliente>(this.UrlServiceClientesV1 +"clientes/" + id, super.ObterAuthHeaderJson())
+          .pipe(catchError(super.serviceError));
     }
 
     novoCliente(cliente: Cliente): Observable<Cliente> {

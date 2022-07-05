@@ -1,3 +1,4 @@
+import { NgBrazilValidators } from 'ng-brazil';
 import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControlName, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -45,35 +46,74 @@ export class EditarComponent implements OnInit {
     this.validationMessages = {
       nome: {
         required: 'Informe o Nome',
+      },
+      telefone: {
+        telefone: 'Telefone em formato inválido',
+      },
+      numero: {
+        cpf: 'Telefone em formato inválido',
       }
     };
 
     this.genericValidator = new GenericValidator(this.validationMessages);
 
-    this.clienteService.obterPorId(route.params['id'])
-      .subscribe(cliente => this.cliente = cliente);
+    this.cliente = this.route.snapshot.data['cliente'];
+    console.log('teste: ', this.cliente)
   }
 
   ngOnInit() {
 
     this.clienteForm = this.fb.group({
-      id: '',
       nome: ['', [Validators.required]],
-      cpf: '',
-      email: '',
-      telefone: ''
+
+      cpf: this.fb.group({
+        numero: ['', [NgBrazilValidators.cpf]]
+      }),
+
+      email: this.fb.group({
+        endereco: ['', [Validators.email]],
+      }),
+
+      telefone: ['', [NgBrazilValidators.telefone]],
     });
 
     this.enderecoForm = this.fb.group({
-      id: '',
-      logradouro: '',
-      numero: '',
-      complemento:  '',
-      bairro:  '',
-      cep:  '',
-      cidade: '',
-      estado:  '',
+      logradouro: [''],
+      numero: [''],
+      complemento: [''],
+      bairro: [''],
+      cep: ['', [NgBrazilValidators.cep]],
+      cidade: [''],
+      estado: [''],
       clienteId: ''
+    });
+
+    this.preencherForm();
+
+  }
+
+  preencherForm() {
+
+    this.clienteForm.patchValue({
+      id: this.cliente.id,
+      nome: this.cliente.nome,
+      cpf:{
+        numero: this.cliente.cpf.numero
+      },
+      email:{
+        endereco: this.cliente.email.endereco,
+      },
+      telefone: this.cliente.telefone
+    });
+    this.enderecoForm.patchValue({
+      id: this.cliente.endereco?.id,
+      logradouro: this.cliente.endereco?.logradouro,
+      numero: this.cliente.endereco?.numero,
+      complemento: this.cliente.endereco?.complemento,
+      bairro: this.cliente.endereco?.bairro,
+      cep: this.cliente.endereco?.cep,
+      cidade: this.cliente.endereco?.cidade,
+      estado: this.cliente.endereco?.estado
     });
   }
 

@@ -14,6 +14,7 @@ import { EditarComponent } from './editar/editar.component';
 import { ExcluirComponent } from './excluir/excluir.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { NovoComponent } from './novo/novo.component';
+import { ClienteResolve } from './services/cliente.resolve';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NovoComponent } from './novo/novo.component';
     NgBrazil
   ],
   providers: [
-    ClienteService
+    ClienteService,
+    ClienteResolve
   ]
 })
 export class clienteModule { }
