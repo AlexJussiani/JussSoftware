@@ -25,7 +25,7 @@ namespace JS.MovimentacaoConta.API.Services
         }
 
         private void SetSubscribers()
-        {
+        {            
             _bus.SubscribeAsync<AdicionarMovimentacaoFinanceiraIntegrationEvent>("MovimentaçãoRegistrada",
                 async request => await RegistrarMovimentacao(request));
             _bus.SubscribeAsync<DeletarMovimentacaoFinanciraaIntegrationEvent>("MovimentaçãoRemovida",

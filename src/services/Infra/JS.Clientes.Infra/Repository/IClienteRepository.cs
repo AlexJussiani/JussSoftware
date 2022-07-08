@@ -20,5 +20,6 @@ namespace JS.Clientes.Infra.Repository
         Task<Endereco> ObterEndereco(Guid id);
         void AtualizarCliente(Cliente cliente);
         void DeletarCliente(Cliente cliente);
+        void AtualizarEndereco(Endereco endereco);
     }
 }

@@ -1,16 +1,21 @@
 import { NgBrazilValidators } from 'ng-brazil';
-import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChildren, ElementRef, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControlName, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Observable, fromEvent, merge } from 'rxjs';
 
+
+import { utilsBr } from 'js-brasil';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
 import { Cliente } from '../models/cliente';
-import { Endereco } from '../models/endereco';
+import { CepConsulta, Endereco } from '../models/endereco';
 import { ClienteService } from '../services/cliente.service';
+import { StringUtils } from 'src/app/utils/string-utils';
 
 @Component({
   selector: 'app-editar',
@@ -33,6 +38,7 @@ export class EditarComponent implements OnInit {
   displayMessage: DisplayMessage = {};
   textoCPF: string = '';
 
+  MASKS = utilsBr.MASKS;
   formResult: string = '';
 
   mudancasNaoSalvas: boolean;
@@ -41,7 +47,9 @@ export class EditarComponent implements OnInit {
     private clienteService: ClienteService,
     private router: Router,
     private toastr: ToastrService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
+    private spinner: NgxSpinnerService) {
 
     this.validationMessages = {
       nome: {
@@ -58,10 +66,10 @@ export class EditarComponent implements OnInit {
     this.genericValidator = new GenericValidator(this.validationMessages);
 
     this.cliente = this.route.snapshot.data['cliente'];
-    console.log('teste: ', this.cliente)
   }
 
   ngOnInit() {
+    this.spinner.show();
 
     this.clienteForm = this.fb.group({
       nome: ['', [Validators.required]],
@@ -90,6 +98,10 @@ export class EditarComponent implements OnInit {
 
     this.preencherForm();
 
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 1000);
+
   }
 
   preencherForm() {
@@ -98,12 +110,12 @@ export class EditarComponent implements OnInit {
       id: this.cliente.id,
       nome: this.cliente.nome,
       cpf:{
-        numero: this.cliente.cpf.numero
+        numero: this.cliente.cpf?.numero
       },
       email:{
-        endereco: this.cliente.email.endereco,
+        endereco: this.cliente.email?.endereco,
       },
-      telefone: this.cliente.telefone
+      telefone: this.cliente?.telefone
     });
     this.enderecoForm.patchValue({
       id: this.cliente.endereco?.id,
@@ -156,5 +168,35 @@ export class EditarComponent implements OnInit {
   processarFalha(fail: any) {
     this.errors = fail.error.errors;
     this.toastr.error('Ocorreu um erro!', 'Opa :(');
+  }
+
+  buscarCep(cep: any) {
+
+    cep = StringUtils.somenteNumeros(cep.value);
+    if (cep.length < 8) return;
+
+    this.clienteService.consultaCep(cep)
+      .subscribe(
+        cepRetorno => this.preencherEnderecoConsulta(cepRetorno),
+        erro => this.errors.push(erro));
+  }
+
+  preencherEnderecoConsulta(cepConsulta: CepConsulta) {
+
+    this.enderecoForm.patchValue({
+      logradouro: cepConsulta.logradouro,
+      bairro: cepConsulta.bairro,
+      cep: cepConsulta.cep,
+      cidade: cepConsulta.localidade,
+      estado: cepConsulta.uf
+    });
+  }
+
+
+  abrirModal(content) {
+    this.modalService.open(content);
+  }
+  editarEndereco(){
+
   }
 }

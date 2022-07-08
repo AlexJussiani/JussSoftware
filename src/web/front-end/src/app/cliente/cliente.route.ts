@@ -21,7 +21,12 @@ const clienteRouterConfig: Routes = [
                 cliente: ClienteResolve
               }
             },
-            { path: 'detalhes/:id', component: DetalhesComponent },
+            {
+              path: 'detalhes/:id', component: DetalhesComponent,
+              resolve: {
+                cliente: ClienteResolve
+              }
+            },
             { path: 'excluir/:id', component: ExcluirComponent }
         ]
     }

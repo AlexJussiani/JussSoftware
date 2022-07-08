@@ -6,7 +6,7 @@ import { catchError, map } from "rxjs/operators";
 
 import { BaseService } from 'src/app/services/base.service';
 import { Cliente } from '../models/cliente';
-import { CepConsulta } from "../models/endereco";
+import { CepConsulta, Endereco } from "../models/endereco";
 import { Page } from "src/app/models/Pagination";
 
 @Injectable()
@@ -53,6 +53,15 @@ export class ClienteService extends BaseService {
     atualizarCliente(cliente: Cliente): Observable<Cliente> {
         return new Observable<Cliente>();
     }
+
+    atualizarEndereco(endereco: Endereco): Observable<Endereco> {
+      return this.http
+        .put(this.UrlServiceClientesV1 + "clientes/endereco" + endereco.id, endereco, super.ObterAuthHeaderJson())
+        .pipe(
+          map(super.extractData),
+          catchError(super.serviceError)
+        );
+  }
 
     excluirCliente(id: string): Observable<Cliente> {
         return new Observable<Cliente>();

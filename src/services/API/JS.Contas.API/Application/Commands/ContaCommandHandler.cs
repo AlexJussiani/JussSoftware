@@ -212,7 +212,7 @@ namespace JS.Contas.API.Application.Commands
                     ((int)conta.StatusConta),
                     conta.ContaItems.Select(ItensContasDTO.ParaContaItemDTO).ToList()));
 
-            //envia uma mensagem de pagamento realizado
+            //envia uma mensagem de pagamento realizado            
             await _bus.PublishAsync(new AdicionarMovimentacaoFinanceiraIntegrationEvent(
                 conta.Id, 
                 conta.Codigo, 

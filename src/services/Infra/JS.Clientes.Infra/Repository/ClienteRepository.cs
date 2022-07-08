@@ -54,7 +54,10 @@ namespace JS.Clientes.Infra.Repository
 
         public async Task<Cliente> ObterPorId(Guid id)
         {
-            return await _context.Clientes.FindAsync(id);
+            return await _context.Clientes
+                .Include(c => c.Endereco)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public void Adicionar(Cliente cliente)

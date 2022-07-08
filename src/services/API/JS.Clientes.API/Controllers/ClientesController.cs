@@ -26,7 +26,7 @@ namespace JS.Clientes.API.Controllers
             return await _clienteServices.ObterClientes(ps, page, q);
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{Id:guid}")]
         public async Task<Cliente> ClienteDetalhe(Guid id)
         {
              return await _clienteServices.ObterPorIdService(id);

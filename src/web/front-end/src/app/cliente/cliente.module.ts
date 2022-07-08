@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 import { NgBrazil } from 'ng-brazil'
 import { TextMaskModule } from 'angular2-text-mask';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { ClienteRoutingModule } from './cliente.route';
 import { ClienteAppComponent } from './cliente.app.component';
@@ -32,7 +33,8 @@ import { ClienteResolve } from './services/cliente.resolve';
     ReactiveFormsModule,
     HttpClientModule,
     TextMaskModule,
-    NgBrazil
+    NgBrazil,
+    NgxSpinnerModule
   ],
   providers: [
     ClienteService,
