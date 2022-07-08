@@ -85,9 +85,16 @@ namespace JS.Clientes.Infra.Repository
             _context.Update(cliente);
         }
 
+        public void AtualizarEndereco(Endereco endereco)
+        {
+            _context.Enderecos.Update(endereco);
+        }
+
         public void DeletarCliente(Cliente cliente)
         {
             _context.Remove(cliente);
         }
+
+        
     }
 }

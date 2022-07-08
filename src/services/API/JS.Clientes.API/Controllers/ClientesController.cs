@@ -48,7 +48,7 @@ namespace JS.Clientes.API.Controllers
             return CustomResponse(await _clienteServices.CadastrarCliente(cliente));           
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public async Task<ActionResult> AtualizarCliente(Guid id, Cliente cliente)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -56,7 +56,15 @@ namespace JS.Clientes.API.Controllers
             return CustomResponse(await _clienteServices.AtualizarCliente(id, cliente));
         }
 
-        [HttpDelete("{id}")]
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> AtualizarEndereco(Guid id, Endereco endereco)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            return CustomResponse(await _clienteServices.AtualizarEndereco(id, endereco));
+        }
+
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeletarCliente(Guid id)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);

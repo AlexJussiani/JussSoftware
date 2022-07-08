@@ -38,6 +38,17 @@ namespace JS.Clientes.API.Services
             return await PersistirDados(_clienteRepository.UnitOfWork);
         }
 
+        public async Task<ValidationResult> AtualizarEndereco(Guid id, Endereco endereco)
+        {
+            if(id != endereco.Id)
+            {
+                AdicionarErro("O id informado não é o mesmo que foi passado na query");
+                return ValidationResult;
+            }
+            _clienteRepository.AtualizarEndereco(endereco);
+            return await PersistirDados(_clienteRepository.UnitOfWork);
+        }
+
         public async Task<ValidationResult> CadastrarCliente(Cliente cliente)
         {
             if (!string.IsNullOrEmpty(cliente.Cpf.Numero))
