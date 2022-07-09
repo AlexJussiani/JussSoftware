@@ -1,3 +1,4 @@
+import { AcessoNegadoComponent } from './acesso-negado/acesso-negado.component';
 import { NgModule } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -16,7 +17,8 @@ import { MenuLoginComponent } from './menu-login/menu-login.component';
     HomeComponent,
     FooterComponent,
     NotFoundComponent,
-    MenuLoginComponent
+    MenuLoginComponent,
+    AcessoNegadoComponent
   ],
   imports:[
     CommonModule,
@@ -29,6 +31,7 @@ import { MenuLoginComponent } from './menu-login/menu-login.component';
     HomeComponent,
     FooterComponent,
     NotFoundComponent,
+    AcessoNegadoComponent
   ]
 })
 export class NavegacaoModule{  }
