@@ -1,12 +1,9 @@
 ﻿using JS.Identidade.API.Services;
-using JS.Identidade.Domain.Models;
 using JS.WebAPI.Core.Identidade;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NetDevPack.Security.JwtSigningCredentials.AspNetCore;
-using NSE.WebAPI.Core.Identidade;
 
 namespace JS.Identidade.API.Configuration
 {

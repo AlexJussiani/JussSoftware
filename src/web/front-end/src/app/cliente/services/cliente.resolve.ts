@@ -9,6 +9,6 @@ export class ClienteResolve implements Resolve<Cliente> {
     constructor(private clienteService: ClienteService) { }
 
     resolve(route: ActivatedRouteSnapshot) {
-        return this.clienteService.obterPorId(route.params['id']);
+        return this.clienteService.obterClientePorId(route.params['id']);
     }
 }

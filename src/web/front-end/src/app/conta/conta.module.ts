@@ -4,15 +4,16 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NarikCustomValidatorsModule } from '@narik/custom-validators';
+
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { LoginComponent } from './login/login.component';
 import { ContaAppComponent } from './conta.app.component';
 import { ContaService } from './services/conta.service';
-
 import { ContaRoutingModule } from './conta.route';
-
-import { NarikCustomValidatorsModule } from '@narik/custom-validators';
 import { ContaGuard } from './services/conta.guard';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ContaGuard } from './services/conta.guard';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NarikCustomValidatorsModule
+    NarikCustomValidatorsModule,
+    NgxSpinnerModule
   ],
   providers: [
     ContaService,

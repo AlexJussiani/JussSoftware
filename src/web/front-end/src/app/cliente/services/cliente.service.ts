@@ -35,11 +35,20 @@ export class ClienteService extends BaseService {
             return teste;
     }
 
-    obterPorId(id: string): Observable<Cliente> {
+    obterClientePorId(id: string): Observable<Cliente> {
         return this.http
           .get<Cliente>(this.UrlServiceClientesV1 +"clientes/" + id, super.ObterAuthHeaderJson())
-          .pipe(catchError(super.serviceError));
+          .pipe(
+            map((obj) => obj),
+            catchError(super.serviceError)
+          );
     }
+
+    obterEnderecoPorId(id: string): Observable<Cliente> {
+      return this.http
+        .get<Cliente>(this.UrlServiceClientesV1 +"clientes/" + id, super.ObterAuthHeaderJson())
+        .pipe(catchError(super.serviceError));
+  }
 
     novoCliente(cliente: Cliente): Observable<Cliente> {
       return this.http
@@ -51,20 +60,39 @@ export class ClienteService extends BaseService {
     }
 
     atualizarCliente(cliente: Cliente): Observable<Cliente> {
-        return new Observable<Cliente>();
+        return this.http
+          .put(this.UrlServiceClientesV1 + "clientes/" + cliente.id, cliente, super.ObterAuthHeaderJson())
+          .pipe(
+            map(super.extractData),
+            catchError(super.serviceError)
+          );
     }
 
     atualizarEndereco(endereco: Endereco): Observable<Endereco> {
       return this.http
-        .put(this.UrlServiceClientesV1 + "clientes/endereco" + endereco.id, endereco, super.ObterAuthHeaderJson())
+        .put(this.UrlServiceClientesV1 + "clientes/endereco/" + endereco.id, endereco, super.ObterAuthHeaderJson())
         .pipe(
           map(super.extractData),
           catchError(super.serviceError)
         );
-  }
+    }
+
+    AdicionarEndereco(endereco: Endereco): Observable<Endereco> {
+      return this.http
+        .post(this.UrlServiceClientesV1 + "clientes/endereco", endereco, super.ObterAuthHeaderJson())
+        .pipe(
+          map(super.extractData),
+          catchError(super.serviceError)
+        );
+    }
 
     excluirCliente(id: string): Observable<Cliente> {
-        return new Observable<Cliente>();
+      return this.http
+      .delete(this.UrlServiceClientesV1 + "clientes/" + id, super.ObterAuthHeaderJson())
+      .pipe(
+        map(super.extractData),
+        catchError(super.serviceError)
+      );
     }
 
     consultaCep(cep: string): Observable<CepConsulta> {

@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,14 +9,15 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavegacaoModule } from './navegacao/navegacao.module';
-import { TesteModalComponent } from './teste-modal/teste-modal.component';
+import { ErrorInterceptor } from './services/error.handler.service';
 
-
+export const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+];
 
 @NgModule({
   declarations: [
-    AppComponent,
-    TesteModalComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -26,11 +27,12 @@ import { TesteModalComponent } from './teste-modal/teste-modal.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
-      timeOut: 3000
-    })
+      timeOut: 1000
+    }),
+    HttpClientModule
   ],
   providers: [
-
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

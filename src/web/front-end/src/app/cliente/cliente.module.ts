@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 import { NgBrazil } from 'ng-brazil'
@@ -31,10 +30,12 @@ import { ClienteResolve } from './services/cliente.resolve';
     ClienteRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     TextMaskModule,
     NgBrazil,
     NgxSpinnerModule
+  ],
+ exports: [
+    NgxSpinnerModule,
   ],
   providers: [
     ClienteService,

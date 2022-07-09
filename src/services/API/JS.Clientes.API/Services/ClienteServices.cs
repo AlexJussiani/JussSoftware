@@ -32,9 +32,21 @@ namespace JS.Clientes.API.Services
                 AdicionarErro("Este CPF já está em uso.");
                 return ValidationResult;
             }
-            var c = await _clienteRepository.ObterPorId(id);
+            var c = await _clienteRepository.ObterClientePorId(id);
             cliente.Id = c.Id;
             _clienteRepository.AtualizarCliente(cliente);
+            return await PersistirDados(_clienteRepository.UnitOfWork);
+        }
+
+        public async Task<ValidationResult> AdicionarEndereco(Endereco endereco)
+        {
+            var idCliente = await _clienteRepository.ObterClientePorId(endereco.ClienteId);
+            if (idCliente == null)
+            {
+                AdicionarErro("Esse endereço não está vinculado a nenhum cliente");
+                return ValidationResult;
+            }
+            _clienteRepository.AdicionarEndereco(endereco);
             return await PersistirDados(_clienteRepository.UnitOfWork);
         }
 
@@ -70,7 +82,7 @@ namespace JS.Clientes.API.Services
                     return ValidationResult;
                 }
             }
-            _clienteRepository.Adicionar(cliente);
+            _clienteRepository.AdicionarCliente(cliente);
 
             return await PersistirDados(_clienteRepository.UnitOfWork);            
         }
@@ -91,14 +103,19 @@ namespace JS.Clientes.API.Services
 
         public async Task<ValidationResult> DeletarCliente(Guid id)
         {
-            var cliente = await _clienteRepository.ObterPorId(id);
+            var cliente = await _clienteRepository.ObterClientePorId(id);
             _clienteRepository.DeletarCliente(cliente);
             return await PersistirDados(_clienteRepository.UnitOfWork);
         }
 
         public async Task<Cliente> ObterPorIdService(Guid id)
         {
-            return await _clienteRepository.ObterPorId(id);            
+            return await _clienteRepository.ObterClientePorId(id);            
+        }
+
+        public async Task<Endereco> ObterEnderecoPorId(Guid id)
+        {
+            return await _clienteRepository.ObterEnderecoPorId(id);
         }
 
         public async Task<Cliente> ObterPorCpfService(string cpf)

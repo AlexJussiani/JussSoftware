@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CustomValidators } from '@narik/custom-validators';
 import { fromEvent, merge, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 import { ContaService } from './../services/conta.service';
@@ -32,7 +33,9 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private contaService: ContaService,
     private router: Router,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
+  ) {
       this.validationMessages = {
         email: {
           required: 'Informe o e-mail',
@@ -67,6 +70,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
+    this.spinner.show();
     if(this.loginForm.dirty && this.loginForm.valid){
       this.usuario = Object.assign({}, this.usuario, this.loginForm.value);
 
@@ -82,6 +86,9 @@ export class LoginComponent implements OnInit {
     this.loginForm.reset();
     this.errors = [];
 
+    console.log('aqui')
+    this.spinner.hide();
+
     this.contaService.LocalStorage.salvarDadosLocaisUsuario(response);
     let toast = this.toastr.success('Login realizado com Sucesso!', 'Bem vindo!!!', {
       progressAnimation: 'increasing',
@@ -96,6 +103,8 @@ export class LoginComponent implements OnInit {
   }
 
   processarFalha(fail: any){
+
+    this.spinner.hide();
 
     if(fail.status === 400)
       this.errors = fail.error.errors.Mensagens;

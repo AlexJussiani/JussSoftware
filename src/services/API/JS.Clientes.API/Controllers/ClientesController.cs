@@ -4,6 +4,7 @@ using JS.WebAPI.Core.Controllers;
 using JS.WebAPI.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using JS.WebAPI.Core.Identidade;
 using System;
 using System.Threading.Tasks;
 
@@ -32,6 +33,13 @@ namespace JS.Clientes.API.Controllers
              return await _clienteServices.ObterPorIdService(id);
         }
 
+
+        [HttpGet("endereco/{Id:guid}")]
+        public async Task<Endereco> ObterEnderecoPorId(Guid id)
+        {
+            return await _clienteServices.ObterEnderecoPorId(id);
+        }
+
         [HttpGet("cpf")]
         public async Task<Cliente> ObterCpf(string cpf)
         {
@@ -48,6 +56,14 @@ namespace JS.Clientes.API.Controllers
             return CustomResponse(await _clienteServices.CadastrarCliente(cliente));           
         }
 
+        [HttpPost("endereco")]
+        public async Task<ActionResult> AdicionarEndereco(Endereco endereco)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            return CustomResponse(await _clienteServices.AdicionarEndereco(endereco));
+        }
+        [ClaimsAuthorize("Cliente", "Alterar")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> AtualizarCliente(Guid id, Cliente cliente)
         {

@@ -27,7 +27,13 @@ const clienteRouterConfig: Routes = [
                 cliente: ClienteResolve
               }
             },
-            { path: 'excluir/:id', component: ExcluirComponent }
+            {
+              path: 'excluir/:id', component: ExcluirComponent,
+              resolve: {
+                cliente: ClienteResolve
+              }
+            }
+
         ]
     }
 ];

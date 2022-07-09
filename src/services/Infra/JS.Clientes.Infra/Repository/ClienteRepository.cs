@@ -52,7 +52,7 @@ namespace JS.Clientes.Infra.Repository
             return _context.Clientes.FirstOrDefaultAsync(c => c.Email.Endereco == email && c.Excluido == false);
         }
 
-        public async Task<Cliente> ObterPorId(Guid id)
+        public async Task<Cliente> ObterClientePorId(Guid id)
         {
             return await _context.Clientes
                 .Include(c => c.Endereco)
@@ -60,7 +60,7 @@ namespace JS.Clientes.Infra.Repository
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public void Adicionar(Cliente cliente)
+        public void AdicionarCliente(Cliente cliente)
         {
             _context.Clientes.Add(cliente);
         }

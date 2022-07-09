@@ -72,6 +72,7 @@ export class EditarComponent implements OnInit {
     this.spinner.show();
 
     this.clienteForm = this.fb.group({
+      id: '',
       nome: ['', [Validators.required]],
 
       cpf: this.fb.group({
@@ -86,6 +87,7 @@ export class EditarComponent implements OnInit {
     });
 
     this.enderecoForm = this.fb.group({
+      id: '',
       logradouro: [''],
       numero: [''],
       complemento: [''],
@@ -97,11 +99,7 @@ export class EditarComponent implements OnInit {
     });
 
     this.preencherForm();
-
-    setTimeout(() => {
       this.spinner.hide();
-    }, 1000);
-
   }
 
   preencherForm() {
@@ -166,12 +164,17 @@ export class EditarComponent implements OnInit {
   }
 
   processarFalha(fail: any) {
-    this.errors = fail.error.errors;
-    this.toastr.error('Ocorreu um erro!', 'Opa :(');
+    if(fail.status === 400)
+      this.errors = fail.error.errors.Mensagens;
+    else
+     this.errors = fail.error.errors;
+    this.toastr.error('Ocorreu um erro!', 'Opa :(',{
+      progressAnimation: 'increasing',
+      progressBar: true
+    });
   }
 
   buscarCep(cep: any) {
-
     cep = StringUtils.somenteNumeros(cep.value);
     if (cep.length < 8) return;
 
@@ -196,7 +199,58 @@ export class EditarComponent implements OnInit {
   abrirModal(content) {
     this.modalService.open(content);
   }
-  editarEndereco(){
 
+  AlterarEnderecoCliente(){
+    if (this.enderecoForm.dirty && this.enderecoForm.valid) {
+
+      this.endereco = Object.assign({}, this.endereco, this.enderecoForm.value);
+
+      this.endereco.cep = StringUtils.somenteNumeros(this.endereco.cep);
+      this.endereco.clienteId = this.cliente.id;
+      if(this.endereco.id == null){
+        this.AdicionarEndereco();
+      }else{
+        this.editarEndereco();
+      }
+
+    }
   }
+
+  editarEndereco(){
+    this.clienteService.atualizarEndereco(this.endereco)
+        .subscribe({
+         next: () => this.processarSucessoEndereco(this.endereco),
+         error: falha => { this.processarFalhaEndereco(falha) }
+        });
+  }
+
+  AdicionarEndereco(){
+    this.clienteService.AdicionarEndereco(this.endereco)
+        .subscribe({
+         next: () => this.processarSucessoEndereco(this.endereco),
+         error: falha => { this.processarFalhaEndereco(falha) }
+        });
+  }
+
+  processarSucessoEndereco(endereco: Endereco) {
+    this.errors = [];
+
+    this.toastr.success('Endereço atualizado com sucesso!', 'Sucesso!');
+    this.clienteService.obterClientePorId(this.cliente.id)
+    this.cliente.endereco = endereco
+    this.modalService.dismissAll();
+  }
+
+  processarFalhaEndereco(fail: any) {
+    if(fail.status === 400)
+      this.errors = fail.error.errors.Mensagens;
+    else
+     this.errors = fail.error.errors;
+    this.toastr.error('Ocorreu um erro!', 'Opa :(',{
+      progressAnimation: 'increasing',
+      progressBar: true
+    });
+  }
+
+
 }
