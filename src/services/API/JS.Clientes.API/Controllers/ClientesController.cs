@@ -56,7 +56,7 @@ namespace JS.Clientes.API.Controllers
             return CustomResponse(await _clienteServices.AtualizarCliente(id, cliente));
         }
 
-        [HttpPut("{id:guid}")]
+        [HttpPut("endereco/{id:guid}")]
         public async Task<ActionResult> AtualizarEndereco(Guid id, Endereco endereco)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
