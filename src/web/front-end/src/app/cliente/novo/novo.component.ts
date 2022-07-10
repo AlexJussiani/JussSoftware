@@ -121,15 +121,13 @@ export class NovoComponent implements OnInit {
           next: (sucesso) => { this.processarSucesso(sucesso) },
           error: (falha) => { this.processarFalha(falha) }
         });
-
-      this.mudancasNaoSalvas = false;
     }
   }
 
   processarSucesso(response: any) {
     this.clienteForm.reset();
     this.errors = [];
-
+    this.mudancasNaoSalvas = false;
     let toast = this.toastr.success('Cliente cadastrado com sucesso!', 'Sucesso!');
     if (toast) {
       toast.onHidden.subscribe(() => {

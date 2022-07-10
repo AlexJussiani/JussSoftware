@@ -1,3 +1,4 @@
+import { ClienteGuard } from './services/cliente.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -14,7 +15,11 @@ const clienteRouterConfig: Routes = [
         path: '', component: ClienteAppComponent,
         children: [
             { path: 'listar-todos', component: ListaComponent },
-            { path: 'adicionar-novo', component: NovoComponent },
+            {
+              path: 'adicionar-novo', component: NovoComponent,
+              canActivate: [ClienteGuard],
+              data: [{claim: {nome: 'Cliente', valor: 'Adicionar'}}]
+             },
             {
               path: 'editar/:id', component: EditarComponent,
               resolve: {

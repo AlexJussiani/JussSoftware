@@ -15,6 +15,7 @@ import { ExcluirComponent } from './excluir/excluir.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { NovoComponent } from './novo/novo.component';
 import { ClienteResolve } from './services/cliente.resolve';
+import { ClienteGuard } from './services/cliente.guard';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ClienteResolve } from './services/cliente.resolve';
   ],
   providers: [
     ClienteService,
-    ClienteResolve
+    ClienteResolve,
+    ClienteGuard
   ]
 })
 export class clienteModule { }
