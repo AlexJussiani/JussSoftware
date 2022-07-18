@@ -45,8 +45,8 @@ namespace JS.Clientes.API.Controllers
         {
             return await _clienteServices.ObterPorCpfService(cpf);
 
-        }       
-
+        }
+        [ClaimsAuthorize("Cliente", "Cadastrar")]
         [HttpPost()]
         public async Task<ActionResult> Registrar(Cliente cliente)
 
@@ -55,7 +55,7 @@ namespace JS.Clientes.API.Controllers
 
             return CustomResponse(await _clienteServices.CadastrarCliente(cliente));           
         }
-
+        [ClaimsAuthorize("Cliente", "Cadastrar")]
         [HttpPost("endereco")]
         public async Task<ActionResult> AdicionarEndereco(Endereco endereco)
         {
@@ -63,7 +63,7 @@ namespace JS.Clientes.API.Controllers
 
             return CustomResponse(await _clienteServices.AdicionarEndereco(endereco));
         }
-        [ClaimsAuthorize("Cliente", "Alterar")]
+        [ClaimsAuthorize("Cliente", "Atualizar")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> AtualizarCliente(Guid id, Cliente cliente)
         {
@@ -71,7 +71,7 @@ namespace JS.Clientes.API.Controllers
 
             return CustomResponse(await _clienteServices.AtualizarCliente(id, cliente));
         }
-
+        [ClaimsAuthorize("Cliente", "Atualizar")]
         [HttpPut("endereco/{id:guid}")]
         public async Task<ActionResult> AtualizarEndereco(Guid id, Endereco endereco)
         {
@@ -79,7 +79,7 @@ namespace JS.Clientes.API.Controllers
 
             return CustomResponse(await _clienteServices.AtualizarEndereco(id, endereco));
         }
-
+        [ClaimsAuthorize("Cliente", "Remover")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeletarCliente(Guid id)
         {

@@ -24,6 +24,6 @@ export class DetalhesComponent {
   }
 
   public EnderecoCompleto(): string {
-    return this.cliente.endereco.logradouro + ", " + this.cliente.endereco.numero + " - " + this.cliente.endereco.cidade + " - " + this.cliente.endereco.estado;
+    return this.cliente.endereco?.logradouro + ", " + this.cliente.endereco?.numero + " - " + this.cliente.endereco?.cidade + " - " + this.cliente.endereco?.estado;
   }
 }

@@ -9,7 +9,6 @@ using System;
 using System.Threading.Tasks;
 using JS.Core.Data.EventSourcing;
 using Microsoft.AspNetCore.Authorization;
-using NSE.WebAPI.Core.Identidade;
 
 namespace JS.Produtos.API.Controllers
 {

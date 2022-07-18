@@ -8,6 +8,7 @@ export abstract class BaseService{
   public LocalStorage = new LocalStorageUtils();
   protected UrlServiceIdentidadeV1: string = environment.apiUrlIdentidadeV1;
   protected UrlServiceClientesV1: string = environment.apiUrlClientesV1;
+  protected UrlServiceProdutosV1: string = environment.apiUrlProdutosV1;
 
   protected ObterHeaderJson() {
     return {

@@ -18,10 +18,12 @@ const clienteRouterConfig: Routes = [
             {
               path: 'adicionar-novo', component: NovoComponent,
               canActivate: [ClienteGuard],
-              data: [{claim: {nome: 'Cliente', valor: 'Adicionar'}}]
+              data: [{claim: {nome: 'Cliente', valor: 'Cadastrar'}}]
              },
             {
               path: 'editar/:id', component: EditarComponent,
+              canActivate: [ClienteGuard],
+              data: [{claim: {nome: 'Cliente', valor: 'Editar'}}],
               resolve: {
                 cliente: ClienteResolve
               }
@@ -34,6 +36,8 @@ const clienteRouterConfig: Routes = [
             },
             {
               path: 'excluir/:id', component: ExcluirComponent,
+              canActivate: [ClienteGuard],
+              data: [{claim: {nome: 'Cliente', valor: 'Remover'}}],
               resolve: {
                 cliente: ClienteResolve
               }

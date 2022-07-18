@@ -17,7 +17,7 @@ export const httpInterceptorProviders = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
