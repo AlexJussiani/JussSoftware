@@ -21,7 +21,7 @@ namespace JS.MovimentacaoConta.API.Application.Commands
             _movimentacaoRepository = movimentacaoRepository;
         }
 
-        public async  Task<ValidationResult> Handle(RegistrarMovimentacaoCommand message, CancellationToken cancellationToken)
+        public async Task<ValidationResult> Handle(RegistrarMovimentacaoCommand message, CancellationToken cancellationToken)
         {
             if (!message.EhValido()) return message.ValidationResult;
 
@@ -33,7 +33,7 @@ namespace JS.MovimentacaoConta.API.Application.Commands
                                                             message.TipoConta
                                                             );
 
-            _movimentacaoRepository.AdicionarMovimentacao(movimentacao);
+           _movimentacaoRepository.AdicionarMovimentacao(movimentacao);
 
             movimentacao.AdicionarEvento(new MovimentacaoRegistradaEvent(message.IdConta,
                                                             message.Codigo,

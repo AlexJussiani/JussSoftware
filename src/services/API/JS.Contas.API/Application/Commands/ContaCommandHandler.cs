@@ -214,11 +214,11 @@ namespace JS.Contas.API.Application.Commands
 
             //envia uma mensagem de pagamento realizado            
             await _bus.PublishAsync(new AdicionarMovimentacaoFinanceiraIntegrationEvent(
-                conta.Id, 
-                conta.Codigo, 
-                conta.ValorTotal, 
-                conta.DataCadastro, 
-                DateTime.Now, 
+                conta.Id,
+                conta.Codigo,
+                conta.ValorTotal,
+                conta.DataCadastro,
+                DateTime.Now,
                 (int)conta.TipoConta));
 
             return await PersistirDados(_contasRepository.UnitOfWork);

@@ -30,10 +30,6 @@ namespace JS.MovimentacaoConta.API.Services
                 async request => await RegistrarMovimentacao(request));
             _bus.SubscribeAsync<DeletarMovimentacaoFinanciraaIntegrationEvent>("MovimentaçãoRemovida",
                 async request => await RemoverMovimentacao(request));
-            //_bus.RespondAsync<MovimentacaoFinanceiraIntegrationEvent, ResponseMessage>(async request =>
-
-
-            //_bus.AdvancedBus.Connected += OnConnect;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -62,6 +58,7 @@ namespace JS.MovimentacaoConta.API.Services
 
         private async Task<ResponseMessage> RegistrarMovimentacao(AdicionarMovimentacaoFinanceiraIntegrationEvent message)
         {
+            
             var movimentacaoCommand = new RegistrarMovimentacaoCommand(message.IdConta, message.Codigo, message.Valor, message.DataRegistro, message.DataPagamento, message.TipoConta);
             ValidationResult sucesso;
 
